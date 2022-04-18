@@ -35,12 +35,12 @@ type Logger struct {
 	*logrus.Entry
 }
 
-func GetLogger() Logger {
-	return Logger{e}
+func GetLogger() *Logger {
+	return &Logger{e}
 }
 
-func (logger *Logger) GetLoggerWithField(k string, v interface{}) Logger {
-	return Logger{logger.WithField(k, v)}
+func (logger *Logger) GetLoggerWithField(k string, v interface{}) *Logger {
+	return &Logger{logger.WithField(k, v)}
 
 }
 
@@ -56,7 +56,7 @@ func init() {
 		FullTimestamp: true,
 	}
 
-	err := os.Mkdir("logs", 0644)
+	err := os.MkdirAll("logs", 0644)
 	if err != nil {
 		panic(err)
 	}
