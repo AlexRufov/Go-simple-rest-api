@@ -1,16 +1,11 @@
 package user
 
-import (
-	"RestApi/pkg/logging"
-	"context"
-)
-
-type Service struct {
-	storage Storage
-	logger  *logging.Logger
-}
-
-func (s Storage) Create(ctx context.Context, dto CreateUserDTO) (u User, err error) {
-	return
-
-}
+//type Service struct {
+//	storage Storage
+//	logger  *logging.Logger
+//}
+//
+//func (s Storage) Create(ctx context.Context, dto CreateUserDTO) (u User, err error) {
+//	return
+//
+//}
