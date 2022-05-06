@@ -3,11 +3,18 @@ listen:
   type: port
   bind_ip: 0.0.0.0
   port: 10000
-mongodb:
-  host: localhost
-  port: 27017
-  database: user-service
-  auth_db:
-  username:
-  password:
-  collection: users
+storage:
+  mongodb:
+    host: localhost
+    port: 27017
+    database: user-service
+    auth_db:
+    username:
+    password:
+    collection: users
+  postgres:
+    host: localhost
+    port: 5433
+    database: user-service
+    username: postgres
+    password: admin

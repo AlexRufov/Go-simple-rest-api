@@ -13,15 +13,26 @@ type Config struct {
 		BindIP string `yaml:"bind_ip" env-default:"127.0.0.1"`
 		Port   string `yaml:"port" env-default:"8080"`
 	} `yaml:"listen"`
-	MongoDB struct {
-		Host       string `yaml:"host"`
-		Port       string `yaml:"port"`
-		Database   string `yaml:"database"`
-		AuthDB     string `yaml:"auth_db"`
-		Username   string `yaml:"username"`
-		Password   string `yaml:"password"`
-		Collection string `yaml:"collection"`
-	} `yaml:"mongodb"`
+	Storage struct {
+		MongoDB      StorageConfigMongo      `yaml:"mongodb"`
+		PostgresqlDB StorageConfigPostgresql `yaml:"postgres"`
+	} `yaml:"storage"`
+}
+type StorageConfigMongo struct {
+	Host       string `yaml:"host"`
+	Port       string `yaml:"port"`
+	Database   string `yaml:"database"`
+	AuthDB     string `yaml:"auth_db"`
+	Username   string `yaml:"username"`
+	Password   string `yaml:"password"`
+	Collection string `yaml:"collection"`
+}
+type StorageConfigPostgresql struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Database string `yaml:"database"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
 var instance *Config
