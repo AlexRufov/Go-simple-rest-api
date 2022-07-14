@@ -1,9 +1,12 @@
 package main
 
 import (
+	"RestApi/internal/book/db"
 	"RestApi/internal/config"
-	"RestApi/internal/user"
+	"RestApi/internal/handlers"
+	"RestApi/pkg/client/postgresql"
 	"RestApi/pkg/logging"
+	"context"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"net"
@@ -21,9 +24,16 @@ func main() {
 
 	cfg := config.GetConfig()
 
-	logger.Info("register user handler")
-	handler := user.New(logger)
-	handler.Register(router)
+	postgreSQLClient, err := postgresql.NewClient(context.TODO(), 3, cfg.Storage.PostgresqlDB)
+	if err != nil {
+		logger.Fatalf("%v", err)
+	}
+	repository := db.NewRepository(postgreSQLClient, logger)
+
+	logger.Info("register author handler")
+	bookHandler := handlers.NewHandler(repository, logger)
+	bookHandler.Register(router)
+
 	start(router, cfg)
 
 }
@@ -32,7 +42,7 @@ func start(router *httprouter.Router, cfg *config.Config) {
 	logger := logging.GetLogger()
 	logger.Info("start application")
 
-	var listen net.Listener
+	var listener net.Listener
 	var listenErr error
 
 	if cfg.Listen.Type == "sock" {
@@ -43,14 +53,14 @@ func start(router *httprouter.Router, cfg *config.Config) {
 		}
 		logger.Info("create socket")
 		socketPath := path.Join(appDir, "app.sock")
-		logger.Info("listen unix socket")
-		listen, listenErr = net.Listen("unix", socketPath)
-		logger.Infof("server is listening unix socket: %s", socketPath)
 
+		logger.Info("listen unix socket")
+		listener, listenErr = net.Listen("unix", socketPath)
+		logger.Infof("server is listening unix socket: %s", socketPath)
 	} else {
 		logger.Info("listen tcp")
-		listen, listenErr = net.Listen("tcp", fmt.Sprintf("%s:%s", cfg.Listen.BindIP, cfg.Listen.Port))
-		logger.Infof("server is listening %s:%s", cfg.Listen.BindIP, cfg.Listen.Port)
+		listener, listenErr = net.Listen("tcp", fmt.Sprintf("%s:%s", cfg.Listen.BindIP, cfg.Listen.Port))
+		logger.Infof("server is listening port %s:%s", cfg.Listen.BindIP, cfg.Listen.Port)
 	}
 
 	if listenErr != nil {
@@ -58,10 +68,10 @@ func start(router *httprouter.Router, cfg *config.Config) {
 	}
 
 	server := &http.Server{
-		Handler:           router,
-		WriteTimeout:      15 * time.Second,
-		ReadHeaderTimeout: 15 * time.Second,
+		Handler:      router,
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
 	}
 
-	logger.Fatal(server.Serve(listen))
+	logger.Fatal(server.Serve(listener))
 }

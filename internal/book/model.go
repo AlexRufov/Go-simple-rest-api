@@ -1,11 +1,12 @@
 package book
 
 import (
-	"RestApi/internal/author/model"
+	"time"
 )
 
 type Book struct {
-	ID      string         `json:"id"`
-	Name    string         `json:"name"`
-	Authors []model.Author `json:"authors"`
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Age       int       `json:"age"`
+	CreatedAt time.Time `json:"created_at"`
 }

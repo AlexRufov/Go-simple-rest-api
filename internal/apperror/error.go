@@ -1,16 +1,32 @@
 package apperror
 
-import "encoding/json"
-
-var (
-	ErrNotFound = NewAppError(nil, "not found", "", "US-000003")
+import (
+	"encoding/json"
+	"fmt"
 )
 
+var (
+	ErrNotFound = NewAppError(nil, "not found", "", "RA-000003")
+)
+
+type ErrorFields map[string]string
+type ErrorParams map[string]string
+
 type AppError struct {
-	Err              error  `json:"-"`
-	Message          string `json:"message,omitempty"`
-	DeveloperMessage string `json:"developer_message,omitempty"`
-	Code             string `json:"code,omitempty"`
+	Err              error       `json:"-"`
+	Message          string      `json:"message,omitempty"`
+	DeveloperMessage string      `json:"developer_message,omitempty"`
+	Code             string      `json:"code,omitempty"`
+	Fields           ErrorFields `json:"fields,omitempty"`
+	Params           ErrorParams `json:"params,omitempty"`
+}
+
+func (e *AppError) WithFields(fields ErrorFields) {
+	e.Fields = fields
+}
+
+func (e *AppError) WithParams(params ErrorParams) {
+	e.Params = params
 }
 
 func (e *AppError) Error() string {
@@ -38,6 +54,10 @@ func NewAppError(err error, message, developerMessage, code string) *AppError {
 	}
 }
 
+func BadRequestError(message, developerMessage string) *AppError {
+	return NewAppError(fmt.Errorf(message), message, developerMessage, "RA-000001")
+}
+
 func systemError(err error) *AppError {
-	return NewAppError(err, "internal system error", err.Error(), "000000")
+	return NewAppError(err, "internal system error", err.Error(), "RA-000000")
 }
