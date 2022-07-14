@@ -1,7 +1,7 @@
 package config
 
 import (
-	"RestApi/pkg/logging"
+	"Go-simple-rest-api/pkg/logging"
 	"github.com/ilyakaznacheev/cleanenv"
 	"sync"
 )

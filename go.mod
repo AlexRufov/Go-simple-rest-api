@@ -1,4 +1,4 @@
-module RestApi
+module Go-simple-rest-api
 
 go 1.18
 

@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"RestApi/internal/apperror"
-	"RestApi/internal/book"
-	"RestApi/pkg/logging"
+	"Go-simple-rest-api/internal/apperror"
+	"Go-simple-rest-api/internal/book"
+	"Go-simple-rest-api/pkg/logging"
 	"context"
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"

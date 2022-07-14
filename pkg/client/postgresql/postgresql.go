@@ -1,8 +1,8 @@
 package postgresql
 
 import (
-	"RestApi/internal/config"
-	"RestApi/pkg/utils"
+	"Go-simple-rest-api/internal/config"
+	"Go-simple-rest-api/pkg/utils"
 	"context"
 	"fmt"
 	"github.com/jackc/pgconn"

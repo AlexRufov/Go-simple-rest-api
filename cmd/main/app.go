@@ -1,11 +1,11 @@
 package main
 
 import (
-	"RestApi/internal/book/db"
-	"RestApi/internal/config"
-	"RestApi/internal/handlers"
-	"RestApi/pkg/client/postgresql"
-	"RestApi/pkg/logging"
+	"Go-simple-rest-api/internal/book/db"
+	"Go-simple-rest-api/internal/config"
+	"Go-simple-rest-api/internal/handlers"
+	"Go-simple-rest-api/pkg/client/postgresql"
+	"Go-simple-rest-api/pkg/logging"
 	"context"
 	"fmt"
 	"github.com/julienschmidt/httprouter"

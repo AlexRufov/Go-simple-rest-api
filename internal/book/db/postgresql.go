@@ -1,9 +1,9 @@
 package db
 
 import (
-	"RestApi/internal/book"
-	"RestApi/pkg/client/postgresql"
-	"RestApi/pkg/logging"
+	"Go-simple-rest-api/internal/book"
+	"Go-simple-rest-api/pkg/client/postgresql"
+	"Go-simple-rest-api/pkg/logging"
 	"context"
 )
 
